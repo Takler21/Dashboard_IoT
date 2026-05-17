@@ -1,0 +1,133 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.filtro-label {
+  color: #2b4c7e;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.table .filtro-label {
+  color: #2b4c7e;
+}
+
+.justificacion {
+  border-left: 3px solid #2b4c7e;
+  padding-left: 1rem;
+}
+
+.datos-json {
+  background-color: #0d1117;
+  max-height: 500px;
+  overflow: auto;
+}
+
+.datos-json pre {
+  color: #c9d1d9;
+  font-size: 0.875rem;
+}
+
+.footer-tabla-registros {
+  color: #2b4c7e;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.tabla-registros tbody tr {
+    cursor: pointer;
+  }
+
+.chart-container {
+  position: relative;
+  width: 100%;
+  height: 240px;
+}
+
+.aviso-registros-pendientes {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #faeeda;
+  color: #854f0b;
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+}
+
+.clasificar-pendientes {
+  color: #854f0b;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+@media (max-width: 767.98px) {
+  .tabla-registros, .tabla-registros tbody,
+  .tabla-registros tr, .tabla-registros td { display: block; }
+  .tabla-registros thead { display: none; }
+
+  .tabla-registros tbody tr {
+    border: none;
+    border-bottom: 1px solid #dee2e6;
+    padding: 8px 0;
+  }
+  .tabla-registros td {
+    position: relative;
+    padding: 10px 16px 10px 45%;
+    text-align: right;
+    border: none;
+  }
+
+  .tabla-registros td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 16px;
+    top: 10px;
+    font: 700 0.8rem system-ui, -apple-system, sans-serif;
+    color: #2b4c7e;
+    letter-spacing: 0.5px;
+  }
+
+}
+
+.toast-importacion {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 1080;
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background-color: #e6f4ea;
+  border-left: 4px solid #198754;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  font-size: 0.875rem;
+  color: #0f5132;
+}
+
+app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.layout-main {
+  flex: 1;
+  background-color: #eef2f7;
+}
+
+.menu-usuario{
+  right: 0;
+  left: auto;
+}
+
+.inicio{
+  cursor: pointer;
+}

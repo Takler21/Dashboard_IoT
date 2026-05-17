@@ -1,0 +1,32 @@
+<div class="d-flex justify-content-between align-items-start mb-3">
+  <div>
+    <h1 class="mb-1">Registros de tráfico</h1>
+    @if (registrosPendientes() > 0) {
+      <span class="aviso-registros-pendientes">
+        {{ registrosPendientes() }} registros pendientes:
+        <a (click)="clasificarPendientes()" class="clasificar-pendientes">Clasificar ahora</a>
+      </span>
+    }
+  </div>
+  <button class="btn btn-primary" (click)="mostrarModalImportacion.set(true)">Importar CSV</button>
+</div>
+
+@if (mostrarModalImportacion()) {
+  <app-modal-importar-registros (closed)="mostrarModalImportacion.set(false)" />
+}
+<div class="row g-3 mb-4">
+  <div class="col-lg-5">
+    <app-estadisticas />
+  </div>
+  <div class="col-lg-7">
+    <app-filtro [filtroActualizado]="filtroActualizado" (filtrar)="buscarRegistros($event)" />
+  </div>
+</div>
+
+<app-tabla-registros
+  [registros]="registros()"
+  [totalCount]="totalCount()"
+  [paginaActual]="paginaActual()"
+  [tamanoPagina]="tamanoPagina()"
+  [cargando]="cargando()"
+  (cambiarPagina)="cambiarPagina($event)" />

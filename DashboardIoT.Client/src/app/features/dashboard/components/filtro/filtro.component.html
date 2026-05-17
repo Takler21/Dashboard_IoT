@@ -1,0 +1,55 @@
+<div class="card h-100 border-0 shadow-sm">
+  <div class="card-body p-4 d-flex flex-column justify-content-between">
+    <div class="row g-3 mb-3">
+      <div class="col-md-4">
+        <label for="tipoTrafico" class="form-label filtro-label">TIPO DE TRÁFICO</label>
+        <select id="tipoTrafico" class="form-select" [(ngModel)]="filtro.tipoTrafico">
+          <option [ngValue]="undefined">Todos</option>
+          @for (tipo of tiposTrafico; track tipo.valor) {
+            <option [ngValue]="tipo.valor">{{ tipo.etiqueta }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="col-md-4">
+        <label for="origenDatos" class="form-label filtro-label">ORIGEN DE DATOS</label>
+        <select id="origenDatos" class="form-select" [(ngModel)]="filtro.idOrigenDatos">
+          <option [ngValue]="undefined">Todos</option>
+          @for (origen of origenesDatos(); track origen.idOrigenDatos) {
+            <option [ngValue]="origen.idOrigenDatos">{{ origen.nombre }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="col-md-4">
+        <label for="direccionIp" class="form-label filtro-label">DIRECCIÓN IP</label>
+        <input
+          type="text"
+          id="direccionIp"
+          class="form-control"
+          placeholder="0.0.0.0"
+          [(ngModel)]="filtro.direccionIp"
+        />
+      </div>
+    </div>
+
+    <div class="row g-3 align-items-end">
+      <div class="col-md-6">
+        <label for="fechaDesde" class="form-label filtro-label">FECHA DESDE</label>
+        <input type="date" id="fechaDesde" class="form-control" [(ngModel)]="filtro.fechaDesde" />
+      </div>
+
+      <div class="col-md-6">
+        <label for="fechaHasta" class="form-label filtro-label">FECHA HASTA</label>
+        <input type="date" id="fechaHasta" class="form-control" [(ngModel)]="filtro.fechaHasta" />
+      </div>
+    </div>
+
+    <div class="row mt-3">
+      <div class="col-12">
+        <button type="button" class="btn btn-primary" (click)="aplicarFiltro()">Buscar</button>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,14 @@
+@if (authService.estaAutenticado()) {
+  <app-layout>
+    <router-outlet></router-outlet>
+  </app-layout>
+
+  @if (importarRegistrosService.mensaje()) {
+    <div class="toast-importacion">
+      {{ importarRegistrosService.mensaje() }}
+      <button class="btn-close btn-close-sm ms-3" (click)="importarRegistrosService.mensaje.set('')"></button>
+    </div>
+  }
+} @else {
+  <router-outlet></router-outlet>
+}

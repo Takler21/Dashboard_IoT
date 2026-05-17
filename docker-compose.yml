@@ -1,0 +1,55 @@
+services:
+  postgres-db:
+    image: postgres:17
+    container_name: tfg-postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+
+  api:
+    build:
+      context: ./DashboardIoT
+    container_name: tfg-dashboard
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:5000
+      DB_CONNECTION_STRING: "Host=postgres-db;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}"
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+    ports:
+      - "5000:5000"
+    depends_on:
+      - postgres-db
+
+  web:
+    build:
+      context: ./DashboardIoT.Client
+    container_name: tfg-web
+    ports:
+      - "8080:80"
+    depends_on:
+      - api
+
+  cowrie-honeypot:
+    image: cowrie/cowrie:latest
+    container_name: tfg-cowrie
+    environment:
+      COWRIE_OUTPUT_SPLUNK_ENABLED: "true"
+      COWRIE_OUTPUT_SPLUNK_URL: ${COWRIE_URL}
+      COWRIE_OUTPUT_SPLUNK_TOKEN: "no-auth"
+      COWRIE_HONEYPOT_SENSOR_NAME: "Sensor Cowrie 1"
+    ports:
+      - "2222:2222"
+      - "2223:2223"
+    volumes:
+      - cowrie_var:/cowrie/cowrie-git/var
+
+volumes:
+  postgres_data:
+  cowrie_var:
