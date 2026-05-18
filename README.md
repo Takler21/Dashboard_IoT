@@ -1,6 +1,23 @@
 # Dashboard IoT
 
+Aplicación web para la captación, clasificación automática y explotación
+de registros de tráfico IoT
+
+## Acceso online
+
+La aplicación está desplegada y accesible en:
+**https://tfg-dashboard-iot.up.railway.app/?pagina=1**
+
+Credenciales de prueba:
+
+- Email: administrador@uoc.edu
+- Contraseña: admin
+
+## Instalación y ejecución local
+
 > Probado y ejecutado en Windows 11.
+
+> No usar maquinas virtuales de windows 11, docker en windows virtualiza un entorno Linux. En consecuencia si la maquina no soporta la virtualización anidada no funcionará.
 
 ## Requisitos previos
 
@@ -65,6 +82,119 @@ La aplicación queda accesible en:
 
 - Frontend: [http://localhost:8080](http://localhost:8080)
 - API: [http://localhost:5000](http://localhost:5000)
+
+---
+
+## Ejecución en máquina virtual Ubuntu
+
+> Probado y ejecutado en Ubuntu 24.04 sobre VirtualBox.
+
+### Software necesario
+
+- **VirtualBox:** [https://www.virtualbox.org/wiki/Downloads](https://www.virtualbox.org/wiki/Downloads)
+- **Ubuntu 24.04:** [https://releases.ubuntu.com/24.04/](https://releases.ubuntu.com/24.04/)
+
+### Instalación de Docker
+
+Se siguen las instrucciones oficiales de [Docker Engine en Ubuntu](https://docs.docker.com/engine/install/ubuntu/).
+
+#### Añadir el repositorio APT de Docker
+
+```bash
+# Añadir la clave GPG oficial de Docker:
+sudo apt update
+sudo apt install ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+```
+
+Añadir el repositorio a las fuentes de Apt:
+
+```bash
+sudo tee /etc/apt/sources.list.d/docker.sources <<'EOF'
+Types: deb
+URIs: https://download.docker.com/linux/ubuntu
+Suites: $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}")
+Components: stable
+Architectures: $(dpkg --print-architecture)
+Signed-By: /etc/apt/keyrings/docker.asc
+EOF
+```
+
+```bash
+sudo apt update
+```
+
+#### Instalar Docker
+
+```bash
+sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+```
+
+#### Verificar que Docker está funcionando
+
+```bash
+sudo systemctl status docker
+```
+
+Si Docker no está en ejecución, arrancarlo con:
+
+```bash
+sudo systemctl start docker
+```
+
+#### Añadir el usuario al grupo docker
+
+Para poder ejecutar comandos de Docker sin `sudo`:
+
+```bash
+sudo usermod -aG docker $USER
+```
+
+Reiniciar el sistema para que el cambio surta efecto.
+
+### Configuración del proyecto
+
+Descomprimir el proyecto. En el directorio raíz, pulsar `Ctrl+H` en el explorador de archivos para mostrar los archivos ocultos.
+
+Editar el archivo `.env.example` con las claves necesarias y renombrarlo a `.env`.
+
+**JWT_SECRET_KEY** — ejecutar el siguiente comando en PowerShell y copiar la clave generada:
+
+```bash
+openssl rand -base64 48
+```
+
+**GEMINI_API_KEY** — acceder a [Google AI Studio](https://aistudio.google.com/apikey) con una cuenta de Google y seleccionar la opción para crear una clave API.
+
+![Pantalla de creación de clave API en Google AI Studio](images/clave-gemini.png)
+
+Copiar la clave y pegarla en el archivo `.env`.
+
+### Ejecución de los contenedores
+
+Para limpiar contenedores y volúmenes existentes:
+
+```bash
+docker compose down -v
+```
+
+Para construir y levantar los contenedores por primera vez (o reconstruir):
+
+```bash
+docker compose up -d --build
+```
+
+Si los contenedores ya se construyeron anteriormente, para levantarlos:
+
+```bash
+docker compose up -d
+```
+
+Una vez construidos y levantados los contenedores, acceder desde el navegador a [http://localhost:8080](http://localhost:8080).
+
+---
 
 ## Uso
 
