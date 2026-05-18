@@ -6,7 +6,7 @@ de registros de tráfico IoT
 ## Acceso online
 
 La aplicación está desplegada y accesible en:
-**https://tfg-dashboard-iot.up.railway.app/?pagina=1**
+**https://tfg-dashboard-iot.up.railway.app**
 
 Credenciales de prueba:
 
@@ -17,7 +17,7 @@ Credenciales de prueba:
 
 > Probado y ejecutado en Windows 11.
 
-> No usar maquinas virtuales de windows 11, docker en windows virtualiza un entorno Linux. En consecuencia si la maquina no soporta la virtualización anidada no funcionará.
+> No usar máquinas virtuales de Windows 11, Docker Desktop en Windows virtualiza un entorno Linux. En consecuencia si la máquina no soporta la virtualización anidada no funcionará.
 
 ## Requisitos previos
 
@@ -25,7 +25,7 @@ Instalar [Docker Desktop](https://www.docker.com/products/docker-desktop/).
 
 ![Opciones de descarga de Docker Desktop según sistema operativo](images/opciones-docker.png)
 
-He descargado la versión correspondiente a Windows AMD64; la versión dependerá del equipo en el que se quiera ejecutar la aplicación.
+Se ha usado la versión para Windows AMD64; la versión dependerá del equipo en el que se quiera ejecutar la aplicación.
 
 Dar a _siguiente_ en el instalador hasta finalizar la instalación, y reiniciar el ordenador cuando el instalador lo solicite.
 
@@ -160,7 +160,7 @@ Descomprimir el proyecto. En el directorio raíz, pulsar `Ctrl+H` en el explorad
 
 Editar el archivo `.env.example` con las claves necesarias y renombrarlo a `.env`.
 
-**JWT_SECRET_KEY** — ejecutar el siguiente comando en PowerShell y copiar la clave generada:
+**JWT_SECRET_KEY** — ejecutar el siguiente comando en terminal y copiar la clave generada:
 
 ```bash
 openssl rand -base64 48
@@ -219,7 +219,7 @@ ssh root@localhost -p 2222
 
 ![Conexión SSH al honeypot Cowrie](images/conexion-cowrie.png)
 
-En la primera conexión preguntará si se quiere continuar: indicar `yes`. A continuación, introducir una contraseña genérica como `admin` para acceder al sensor.
+En la primera conexión preguntará si se quiere continuar: indicar `yes`. A continuación, introducir una contraseña genérica como `admin` o `1234` para acceder al sensor.
 
 Una vez dentro, se pueden ejecutar diferentes comandos para generar registros que se enviarán a la aplicación, por ejemplo:
 
