@@ -1,9 +1,7 @@
-using System.Text;
 using System.Threading.RateLimiting;
 using DashboardIoT.Registros.Infrastructure;
 using DashboardIoT.Usuarios.Infrastructure;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
@@ -28,24 +26,13 @@ builder.Services.AddRateLimiter(options =>
                 QueueLimit = 0,
             })));
 
-var jwtKey = Environment.GetEnvironmentVariable("JWT_SECRET_KEY")!;
-
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = false,
-            ValidateAudience = false,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
-        };
-    });
-builder.Services.AddAuthorization();
-
 builder.Services.AddUsuariosModule();
 builder.Services.AddRegistrosModule();
+
+builder.Services.AddAuthorizationBuilder()
+    .SetFallbackPolicy(new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build());
 
 var allowedOrigins = config.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? [];
 builder.Services.AddCors(options =>

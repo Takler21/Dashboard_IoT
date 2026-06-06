@@ -7,7 +7,7 @@ namespace DashboardIoT.Api.Controllers.Registros;
 
 [ApiController]
 [Route("api/[controller]")]
-[AllowAnonymous]
+[Authorize]
 public class RegistrosController(IRegistrosService registrosService) : ControllerBase
 {
     private readonly IRegistrosService _registrosService = registrosService;

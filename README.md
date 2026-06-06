@@ -3,6 +3,8 @@
 Aplicación web para la captación, clasificación automática y explotación
 de registros de tráfico IoT
 
+> Probado y ejecutado en Ubuntu 24.04 y Windows 11.
+
 ## Acceso online
 
 La aplicación está desplegada y accesible en:
@@ -13,88 +15,22 @@ Credenciales de prueba:
 - Email: administrador@uoc.edu
 - Contraseña: admin
 
-## Instalación y ejecución local
-
-> Probado y ejecutado en Windows 11.
-
-> No usar máquinas virtuales de Windows 11, Docker Desktop en Windows virtualiza un entorno Linux. En consecuencia si la máquina no soporta la virtualización anidada no funcionará.
-
-## Requisitos previos
-
-Instalar [Docker Desktop](https://www.docker.com/products/docker-desktop/).
-
-![Opciones de descarga de Docker Desktop según sistema operativo](images/opciones-docker.png)
-
-Se ha usado la versión para Windows AMD64; la versión dependerá del equipo en el que se quiera ejecutar la aplicación.
-
-Dar a _siguiente_ en el instalador hasta finalizar la instalación, y reiniciar el ordenador cuando el instalador lo solicite.
-
-Tras instalar Docker Desktop, abrir PowerShell **como administrador** y ejecutar:
-
-```powershell
-wsl --install
-```
-
-![Instalación de WSL desde PowerShell](images/wsl.png)
-
-Durante la instalación de WSL se solicitará crear un usuario y contraseña para Ubuntu (Linux). Estas credenciales son independientes de la cuenta de Windows; cualquier nombre y contraseña son válidos para los propósitos del proyecto.
-
-## Descarga y configuración del proyecto
+## Descarga del proyecto
 
 Descargar el archivo ZIP del repositorio: [https://github.com/Takler21/Dashboard_IoT](https://github.com/Takler21/Dashboard_IoT).
 
 ![Descarga del repositorio desde GitHub como ZIP](images/repositorio.png)
 
-Extraer el contenido de la carpeta y acceder al directorio raíz del proyecto.
+Extraer el contenido del archivo y acceder al directorio raíz del proyecto.
 
-Renombrar el archivo `.env.example` como `.env`.
-
-### Variables de entorno
-
-Obtener las claves para `GEMINI_API_KEY` y `JWT_SECRET_KEY`:
-
-**JWT_SECRET_KEY** — ejecutar el siguiente comando en PowerShell y copiar la clave generada:
-
-```powershell
-$bytes = New-Object byte[] 48; (New-Object System.Security.Cryptography.RNGCryptoServiceProvider).GetBytes($bytes); [Convert]::ToBase64String($bytes)
-```
-
-**GEMINI_API_KEY** — acceder a [Google AI Studio](https://aistudio.google.com/apikey) con una cuenta de Google y seleccionar la opción para crear una clave API.
-
-![Pantalla de creación de clave API en Google AI Studio](images/clave-gemini.png)
-
-Copiar la clave y pegarla en el archivo `.env`.
-
-### Datos iniciales (opcional)
-
-Previo a la ejecución de los contenedores, para realizar una carga inicial de la base de datos con registros y clasificaciones de ejemplo, eliminar el archivo `init.sql` y renombrar `init2.sql` como `init.sql`. Este paso es opcional; en caso de no realizarlo, la base de datos se iniciará vacía y los registros se podrán cargar directamente desde la aplicación.
-
-## Ejecución
-
-Con el entorno y las variables configuradas, asegurarse de que Docker Desktop esté en ejecución (aparece en la bandeja de tareas de Windows).
-
-Ejecutar en el directorio del proyecto:
-
-- `Instalar.bat` — construye los contenedores por primera vez, o los borra y reconstruye desde cero.
-- `Arrancar.bat` — levanta los contenedores y abre el navegador en la aplicación.
-
-La aplicación queda accesible en:
-
-- Frontend: [http://localhost:8080](http://localhost:8080)
-- API: [http://localhost:5000](http://localhost:5000)
-
----
-
-## Ejecución en máquina virtual Ubuntu
-
-> Probado y ejecutado en Ubuntu 24.04 sobre VirtualBox.
+## Instalación y ejecución en Ubuntu 24.04
 
 ### Software necesario
 
 - **VirtualBox:** [https://www.virtualbox.org/wiki/Downloads](https://www.virtualbox.org/wiki/Downloads)
 - **Ubuntu 24.04:** [https://releases.ubuntu.com/24.04/](https://releases.ubuntu.com/24.04/)
 
-### Instalación de Docker
+### Instalación de Docker Engine
 
 Se siguen las instrucciones oficiales de [Docker Engine en Ubuntu](https://docs.docker.com/engine/install/ubuntu/).
 
@@ -112,7 +48,7 @@ sudo chmod a+r /etc/apt/keyrings/docker.asc
 Añadir el repositorio a las fuentes de Apt:
 
 ```bash
-sudo tee /etc/apt/sources.list.d/docker.sources <<'EOF'
+sudo tee /etc/apt/sources.list.d/docker.sources <<EOF
 Types: deb
 URIs: https://download.docker.com/linux/ubuntu
 Suites: $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}")
@@ -156,7 +92,7 @@ Reiniciar el sistema para que el cambio surta efecto.
 
 ### Configuración del proyecto
 
-Descomprimir el proyecto. En el directorio raíz, pulsar `Ctrl+H` en el explorador de archivos para mostrar los archivos ocultos.
+En el directorio raíz, pulsar `Ctrl+H` en el explorador de archivos para mostrar los archivos ocultos.
 
 Editar el archivo `.env.example` con las claves necesarias y renombrarlo a `.env`.
 
@@ -172,7 +108,11 @@ openssl rand -base64 48
 
 Copiar la clave y pegarla en el archivo `.env`.
 
-### Ejecución de los contenedores
+### Datos iniciales (opcional)
+
+Previo a la ejecución de los contenedores, para realizar una carga inicial de la base de datos con registros y clasificaciones de ejemplo, eliminar el archivo `init.sql` y renombrar `init2.sql` como `init.sql`. Este paso es opcional; en caso de no realizarlo, la base de datos se iniciará vacía y los registros se podrán cargar directamente desde la aplicación.
+
+### Ejecución
 
 Para limpiar contenedores y volúmenes existentes:
 
@@ -193,6 +133,70 @@ docker compose up -d
 ```
 
 Una vez construidos y levantados los contenedores, acceder desde el navegador a [http://localhost:8080](http://localhost:8080).
+
+---
+
+## Instalación y ejecución en Windows 11
+
+> No usar máquinas virtuales de Windows 11, Docker Desktop en Windows virtualiza un entorno Linux. En consecuencia si la máquina no soporta la virtualización anidada no funcionará.
+
+### Requisitos previos
+
+Instalar [Docker Desktop](https://www.docker.com/products/docker-desktop/).
+
+![Opciones de descarga de Docker Desktop según sistema operativo](images/opciones-docker.png)
+
+Se ha usado la versión para Windows AMD64; la versión dependerá del equipo en el que se quiera ejecutar la aplicación.
+
+Dar a _siguiente_ en el instalador hasta finalizar la instalación, y reiniciar el ordenador cuando el instalador lo solicite.
+
+Tras instalar Docker Desktop, abrir PowerShell **como administrador** y ejecutar:
+
+```powershell
+wsl --install
+```
+
+![Instalación de WSL desde PowerShell](images/wsl.png)
+
+Durante la instalación de WSL se solicitará crear un usuario y contraseña para Ubuntu (Linux). Estas credenciales son independientes de la cuenta de Windows; cualquier nombre y contraseña son válidos para los propósitos del proyecto.
+
+### Configuración del proyecto
+
+Renombrar el archivo `.env.example` como `.env`.
+
+#### Variables de entorno
+
+Obtener las claves para `GEMINI_API_KEY` y `JWT_SECRET_KEY`:
+
+**JWT_SECRET_KEY** — ejecutar el siguiente comando en PowerShell y copiar la clave generada:
+
+```powershell
+$bytes = New-Object byte[] 48; (New-Object System.Security.Cryptography.RNGCryptoServiceProvider).GetBytes($bytes); [Convert]::ToBase64String($bytes)
+```
+
+**GEMINI_API_KEY** — acceder a [Google AI Studio](https://aistudio.google.com/apikey) con una cuenta de Google y seleccionar la opción para crear una clave API.
+
+![Pantalla de creación de clave API en Google AI Studio](images/clave-gemini.png)
+
+Copiar la clave y pegarla en el archivo `.env`.
+
+### Datos iniciales (opcional)
+
+Previo a la ejecución de los contenedores, para realizar una carga inicial de la base de datos con registros y clasificaciones de ejemplo, eliminar el archivo `init.sql` y renombrar `init2.sql` como `init.sql`. Este paso es opcional; en caso de no realizarlo, la base de datos se iniciará vacía y los registros se podrán cargar directamente desde la aplicación.
+
+### Ejecución
+
+Con el entorno y las variables configuradas, asegurarse de que Docker Desktop esté en ejecución (aparece en la bandeja de tareas de Windows).
+
+Ejecutar en el directorio del proyecto:
+
+- `Instalar.bat` — construye los contenedores por primera vez, o los borra y reconstruye desde cero.
+- `Arrancar.bat` — levanta los contenedores y abre el navegador en la aplicación.
+
+La aplicación queda accesible en:
+
+- Frontend: [http://localhost:8080](http://localhost:8080)
+- API: [http://localhost:5000](http://localhost:5000)
 
 ---
 

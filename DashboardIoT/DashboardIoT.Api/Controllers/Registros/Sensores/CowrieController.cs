@@ -1,6 +1,7 @@
 using System.Text.Json;
 using DashboardIoT.Registros.Application.DTOs;
 using DashboardIoT.Registros.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 
@@ -9,6 +10,7 @@ namespace DashboardIoT.Api.Controllers.Registros.Sensores;
 [ApiController]
 [Route("api/[controller]")]
 [EnableRateLimiting("honeypot")]
+[AllowAnonymous]
 public class CowrieController(IRegistrosService registrosService) : ControllerBase
 {
     [HttpPost]
